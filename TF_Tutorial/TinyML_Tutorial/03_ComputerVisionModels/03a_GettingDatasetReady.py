@@ -38,16 +38,17 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 # CONFIGURE THE SINGLE IMAGE PROCESSING
 # All images will be augmented according to whichever lines are uncommented below.
-# we can first try without any of the augmentation beyond the rescaling
+# we can first try without any of the augmentation beyond the rescaling.
+# This will generate a larger dataset (and therefore it will take longer to train)
 train_datagen = ImageDataGenerator(
       rescale 			= 1./255,
-      #rotation_range 		= 40,
-      #width_shift_range	= 0.2,
-      #height_shift_range	= 0.2,
-      #shear_range		= 0.2,
-      #zoom_range			= 0.2,
-      #horizontal_flip		= True,
-      #fill_mode			= 'nearest'
+      rotation_range 		= 40,
+      width_shift_range	      = 0.2,
+      height_shift_range      = 0.2,
+      shear_range 		= 0.2,
+      zoom_range			= 0.2,
+      horizontal_flip		= True,
+      fill_mode			= 'nearest'
       )
 
 # CONFIGURE THE DATA FLOW
@@ -61,16 +62,7 @@ train_generator = train_datagen.flow_from_directory(
         class_mode 	= 'binary')			# Since we use binary_crossentropy loss, we need binary labels.
                                                 # If we have more than two classes, we use the 'categorical' mode.
 
-validation_datagen = ImageDataGenerator(
-      rescale 				= 1./255,
-      #rotation_range 		= 40,
-      #width_shift_range	= 0.2,
-      #height_shift_range	= 0.2,
-      #shear_range			= 0.2,
-      #zoom_range			= 0.2,
-      #horizontal_flip		= True,
-      #fill_mode			= 'nearest'
-      )
+validation_datagen = ImageDataGenerator( rescale = 1./255 )
 
 validation_generator = validation_datagen.flow_from_directory(
         datasets_path + 'validation-horse-or-human',
@@ -123,11 +115,12 @@ model.compile(	loss 		= 'binary_crossentropy',
 
 # Train the guy
 history = model.fit(
-      train_generator,
-      steps_per_epoch 	= 8,
-      epochs 			= EPOCHS,
-      verbose 			= 1,
-      validation_data 	= validation_generator )
+      train_generator,                                # Set the traing generator!!!!
+      steps_per_epoch 	= 8,         
+      epochs 		= EPOCHS,
+      verbose 		= 1,
+      validation_data 	= validation_generator,       # And the validation generator.
+      validation_steps  = 8 )
 
 #####
 #   #
@@ -137,19 +130,19 @@ history = model.fit(
 from keras.preprocessing import image
 import numpy as np
 
-# Get image
+# Get a bunch of images to try our model and see how well it predicts the class.
 validation_dataseth_path = datasets_path + 'validation-horse-or-human/'
 images_path = [	validation_dataseth_path + '/horses/horse1-411.png',		\
-				validation_dataseth_path + '/humans/valhuman01-00.png',		\
-				validation_dataseth_path + '/horses/horse2-011.png',		\
-				validation_dataseth_path + '/humans/valhuman02-06.png',		\
-				validation_dataseth_path + '/horses/horse3-171.png',		\
-				validation_dataseth_path + '/humans/valhuman03-09.png',		\
-				validation_dataseth_path + '/horses/horse4-014.png',		\
-				validation_dataseth_path + '/humans/valhuman04-11.png',		\
-				validation_dataseth_path + '/horses/horse5-065.png',		\
-				validation_dataseth_path + '/humans/valhuman05-21.png',		\
-				validation_dataseth_path + '/horses/horse6-544.png' ]
+                  validation_dataseth_path + '/humans/valhuman01-00.png',	\
+			validation_dataseth_path + '/horses/horse2-011.png',		\
+			validation_dataseth_path + '/humans/valhuman02-06.png',	\
+			validation_dataseth_path + '/horses/horse3-171.png',		\
+			validation_dataseth_path + '/humans/valhuman03-09.png',	\
+			validation_dataseth_path + '/horses/horse4-014.png',		\
+			validation_dataseth_path + '/humans/valhuman04-11.png',	\
+			validation_dataseth_path + '/horses/horse5-065.png',		\
+			validation_dataseth_path + '/humans/valhuman05-21.png',	\
+			validation_dataseth_path + '/horses/horse6-544.png' ]
 
 print( "\nTESTING HOW GOOD THE MODEL PERFORMS:\n" )
 for img_path in images_path:
