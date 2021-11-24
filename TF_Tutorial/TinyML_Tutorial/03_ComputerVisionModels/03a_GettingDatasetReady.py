@@ -40,11 +40,11 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 # All images will be augmented according to whichever lines are uncommented below.
 # we can first try without any of the augmentation beyond the rescaling
 train_datagen = ImageDataGenerator(
-      rescale 				= 1./255,
+      rescale 			= 1./255,
       #rotation_range 		= 40,
       #width_shift_range	= 0.2,
       #height_shift_range	= 0.2,
-      #shear_range			= 0.2,
+      #shear_range		= 0.2,
       #zoom_range			= 0.2,
       #horizontal_flip		= True,
       #fill_mode			= 'nearest'
@@ -52,11 +52,14 @@ train_datagen = ImageDataGenerator(
 
 # CONFIGURE THE DATA FLOW
 train_generator = train_datagen.flow_from_directory(
-        datasets_path + 'horse-or-human/',  # This is the source directory for training images, the generator will
-        									# automatically label each image with the directory name ("horses", "human")
-        target_size = ( 100, 100 ),  		# All images will be resized to 100x100
-        batch_size 	= 128,   				# Flow training images in batches of 128
-        class_mode 	= 'binary')				# Since we use binary_crossentropy loss, we need binary labels
+        datasets_path + 'horse-or-human/',      # This is the source directory for training images, the generator will
+        							# automatically label each image with the directory name within 
+                                                # (there are two folder inside: /horses, /humans; therefore the files
+                                                # will be labelled with "horses" and "humans" )
+        target_size     = ( 100, 100 ),  		# All images will be resized to 100x100
+        batch_size 	= 128,   			# Flow training images in batches of 128
+        class_mode 	= 'binary')			# Since we use binary_crossentropy loss, we need binary labels.
+                                                # If we have more than two classes, we use the 'categorical' mode.
 
 validation_datagen = ImageDataGenerator(
       rescale 				= 1./255,
@@ -72,7 +75,8 @@ validation_datagen = ImageDataGenerator(
 validation_generator = validation_datagen.flow_from_directory(
         datasets_path + 'validation-horse-or-human',
         target_size 	= ( 100, 100 ),
-        class_mode 		= 'binary')
+        batch_size      = 32,
+        class_mode 	= 'binary')
 
 ################################################################################
 
@@ -104,7 +108,7 @@ model = tf.keras.models.Sequential( [
     tf.keras.layers.Dense( 512, activation = 'relu' ),
     tf.keras.layers.Dense( 256, activation = 'relu' ),
     # Only 1 output neuron. It will contain a value from 0-1 where 0 for 1 class ('horses') and 1 for the other ('humans')
-    tf.keras.layers.Dense(1, activation='sigmoid')
+    tf.keras.layers.Dense( 1, activation = 'sigmoid' )
 ] )
 print( model.summary( ) )
 
@@ -125,11 +129,9 @@ history = model.fit(
       verbose 			= 1,
       validation_data 	= validation_generator )
 
-#### end of file ####
-
 #####
 #   #
-# 2 # USE THE MODEL
+# 3 # USE THE MODEL
 #   #
 #####
 from keras.preprocessing import image
@@ -172,3 +174,5 @@ for img_path in images_path:
 			print( "HORSE OK" )
 		else:
 			print( "HUMAN KO" )
+
+#### end of file ####
