@@ -15,8 +15,6 @@ data = tf.keras.datasets.mnist
 # Split the data in train (used to train our model ) and test ( to test 
 # model performance )
 ( training_images, training_labels ), ( validation_images, validation_labels ) = data.load_data( )
-print( len(training_images))
-print( len(validation_images))
 
 #####
 #   #
