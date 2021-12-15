@@ -1,3 +1,8 @@
+"""
+This script analize the accuracy of a given NN with the obtained datasets from
+the 04a_* script.
+"""
+
 import argparse
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import tensorflow as tf

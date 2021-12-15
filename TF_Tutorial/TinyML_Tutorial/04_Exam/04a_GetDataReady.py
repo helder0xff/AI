@@ -1,3 +1,9 @@
+"""
+This script split the flowers dataset in the three different channels RGB in 
+order to experiment with its merging and check the different permances.
+The obtained sets from this script will be used in 04b_* script.
+"""
+
 #from tensorflow.keras.preprocessing.image import ImageDataGenerator
 import os
 import sys
