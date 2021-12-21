@@ -103,10 +103,14 @@ if False == pathlib.Path(export_dir).is_dir():
 #   #
 #####
 # Squeez
-converter = tf.lite.TFLiteConverter.from_saved_model(export_dir)
-converter.optimizations = [tf.lite.Optimize.DEFAULT]
-tflite_model = converter.convert()
-tflite_model_file = pathlib.Path(export_dir + '/tflite')	
-tflite_model_file.write_bytes(tflite_model)
+optimizationsLabels = ['', 'DEFAULT']
+optimizations = ['', tf.lite.Optimize.DEFAULT]
+
+for i in range(len(optimizations)):
+	converter = tf.lite.TFLiteConverter.from_saved_model(export_dir)
+	converter.optimizations = [optimizations[i]]
+	tflite_model = converter.convert()
+	tflite_model_file = pathlib.Path(export_dir + '/tflite' + optimizationsLabels[i])	
+	tflite_model_file.write_bytes(tflite_model)
 
 #### end of file ####
