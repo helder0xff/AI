@@ -1,2 +1,7 @@
 datasets/
 TF_Tutorial/02_TF_Lite/01_Intro/models/
+TF_Tutorial/02_TF_Lite/02_Quantization/models/
+flatbuffers/
+tensorflow/
+tflite/
+inception_v3_2015_2017_11_10.zip
