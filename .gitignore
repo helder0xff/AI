@@ -2,6 +2,13 @@ datasets/
 TF_Tutorial/02_TF_Lite/01_Intro/models/
 TF_Tutorial/02_TF_Lite/02_Quantization/models/
 flatbuffers/
-tensorflow/
+tensorflow-2.4.1/
 tflite/
 inception_v3_2015_2017_11_10.zip
+TF_Tutorial/02_TF_Lite/03_App_KeywordSpotting/dataset/
+TF_Tutorial/02_TF_Lite/03_App_KeywordSpotting/extract_loudest_section/
+TF_Tutorial/02_TF_Lite/03_App_KeywordSpotting/logs/
+TF_Tutorial/02_TF_Lite/03_App_KeywordSpotting/models/
+TF_Tutorial/02_TF_Lite/03_App_KeywordSpotting/train/
+TF_Tutorial/02_TF_Lite/03_App_KeywordSpotting/trimmed/
+*.wav
