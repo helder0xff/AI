@@ -1,3 +1,7 @@
+################################################################################
+# https://colab.research.google.com/github/tinyMLx/colabs/blob/master/3-5-13-PretrainedModel.ipynb#scrollTo=g7eZJQUxn-Ri
+################################################################################
+
 import sys
 import os
 import pathlib
@@ -5,8 +9,6 @@ import numpy as np
 import tensorflow.compat.v1 as tf
 import librosa
 import scipy.io.wavfile
-
-#tf.disable_v2_behavior()
 
 # We add this path so we can import the SPEECH PROCESSING MODULES.
 SPEECH_COMMANDS_PATH = '../../../tensorflow-2.4.1/tensorflow/examples/speech_commands/'
@@ -30,11 +32,11 @@ UNKNOWN_PERCENTAGE 						= equal_percentage_of_training_samples
 
 # Constants which are shared during training and inference
 PREPROCESS 			= 'micro'
-WINDOW_STRIDE 		= 20
+WINDOW_STRIDE 		= 20			# Window width
 MODEL_ARCHITECTURE 	= 'tiny_conv'
 
 # Constants for training directories and filepaths
-DATASET_DIR 	= 'dataset/'
+DATASET_DIR 	= '../../../datasets/keywords/'
 LOGS_DIR 		= 'logs/'
 TRAIN_DIR 		= 'train/' # for training checkpoints and other files.
 
@@ -75,12 +77,7 @@ TOTAL_STEPS = 15000 # used to identify which checkpoint file
 
 def main():
 	print("\n################################################################################")
-	print("KEYWORDS:", KEYWORDS)
-	print("################################################################################")	
-	print("################################################################################")
-
-	print("\n################################################################################")
-	print("SAVING PRE-TRAINED MODEL")
+	print("LOADING PRE-TRAINED MODEL")
 	print("################################################################################")
 	if 	False == pathlib.Path(SAVED_MODEL).is_dir():
 		cmnd = 'rm -rf ' + SAVED_MODEL
@@ -116,7 +113,6 @@ def main():
 		False == pathlib.Path(MODEL_TFLITE).is_file():
 	# CREATE FLOAT AND QUANTIZED LITE MODELS
 		with tf.Session() as sess:
-		# with tf.compat.v1.Session() as sess: #replaces the above line for use with TF2.x
 		  float_converter = tf.lite.TFLiteConverter.from_saved_model(SAVED_MODEL)
 		  float_tflite_model = float_converter.convert()
 		  float_tflite_model_size = open(FLOAT_MODEL_TFLITE, "wb").write(float_tflite_model)
@@ -124,10 +120,8 @@ def main():
 
 		  converter = tf.lite.TFLiteConverter.from_saved_model(SAVED_MODEL)
 		  converter.optimizations = [tf.lite.Optimize.DEFAULT]
-		  converter.inference_input_type = tf.lite.constants.INT8
-		  # converter.inference_input_type = tf.compat.v1.lite.constants.INT8 #replaces the above line for use with TF2.x   
-		  converter.inference_output_type = tf.lite.constants.INT8
-		  # converter.inference_output_type = tf.compat.v1.lite.constants.INT8 #replaces the above line for use with TF2.x
+		  converter.inference_input_type = tf.lite.constants.INT8	
+		  converter.inference_output_type = tf.lite.constants.INT8		 
 		  def representative_dataset_gen():
 		    for i in range(100):
 		      data, _ = audio_processor.get_data(1, i*1, model_settings,
@@ -144,7 +138,7 @@ def main():
 		print("################################################################################")
 
 	print("\n################################################################################")
-	print("TESTING ACCURACY")
+	print("CHECKING ACCURACY")
 	print("################################################################################")
 	# Helper function to run inference
 	def run_tflite_inference_testSet(tflite_model_path, model_type="Float"):
@@ -282,6 +276,7 @@ def main():
 			top_prediction_str = 'unknown'
 
 		print('%s model guessed the value to be %s' % (model_type, top_prediction_str))
+		return top_prediction_str
 
 	print("Testing yes1")
 	run_tflite_inference_singleFile(MODEL_TFLITE, yes1, sr_yes1, model_type="Quantized")
