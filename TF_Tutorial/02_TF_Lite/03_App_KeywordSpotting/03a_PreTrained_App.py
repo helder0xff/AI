@@ -37,11 +37,11 @@ MODEL_ARCHITECTURE 	= 'tiny_conv'
 
 # Constants for training directories and filepaths
 DATASET_DIR 	= '../../../datasets/keywords/'
-LOGS_DIR 		= 'logs/'
+LOGS_DIR 		= 'logs_a/'
 TRAIN_DIR 		= 'train/' # for training checkpoints and other files.
 
 # Constants for inference directories and filepaths
-MODELS_DIR = 'models'
+MODELS_DIR = 'models_a'
 if not os.path.exists(MODELS_DIR):
   os.mkdir(MODELS_DIR)
 MODEL_TF 			= os.path.join(MODELS_DIR, 'model.pb')
@@ -275,8 +275,12 @@ def main():
 		else:
 			top_prediction_str = 'unknown'
 
-		print('%s model guessed the value to be %s' % (model_type, top_prediction_str))
-		return top_prediction_str
+		cmnd = 'rm custom_audio.wav'
+		os.system(cmnd)
+		cmnd = 'rm -rf  ./trimmed'
+		os.system(cmnd)
+
+		print('%s model guessed the value to be %s' % (model_type, top_prediction_str))		
 
 	print("Testing yes1")
 	run_tflite_inference_singleFile(MODEL_TFLITE, yes1, sr_yes1, model_type="Quantized")
