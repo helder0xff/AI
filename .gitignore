@@ -1,4 +1,5 @@
 datasets/
+TF_Tutorial/01_Introduction/04_Exam/models/
 TF_Tutorial/02_TF_Lite/01_Intro/models/
 TF_Tutorial/02_TF_Lite/02_Quantization/models/
 flatbuffers/

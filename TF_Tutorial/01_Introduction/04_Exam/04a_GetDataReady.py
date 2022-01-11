@@ -20,7 +20,8 @@ import argparse
 parser = argparse.ArgumentParser(description='Command line for the experiments.')
 parser.add_argument( 	'-s',
 						'--source',
-						 help = 'soruce from where to import dataset', 
+						 help = 'soruce from where to import dataset',
+						 default = 'original',
 						 type = str,
 						 choices = ['originalCap', 'original'],
 						 required = True )

@@ -1,6 +1,6 @@
 ################################################################################
 # Based on:
-# https://colab.research.google.com/github/tinyMLx/colabs/blob/master/3-5-13-PretrainedModel.ipynb#scrollTo=g7eZJQUxn-Ri
+# https://colab.research.google.com/github/tinyMLx/colabs/blob/master/3-5-18-TrainingKeywordSpotting.ipynb
 ################################################################################
 
 import sys
@@ -111,35 +111,37 @@ def main():
 	print("\n################################################################################")
 	print("TRAINING THE MODEL")
 	print("################################################################################")
-	cmnd = "python {}/train.py \
-		--data_dir={} \
-		--wanted_words={} \
-		--silence_percentage={} \
-		--unknown_percentage={} \
-		--preprocess={} \
-		--window_stride={} \
-		--model_architecture={} \
-		--how_many_training_steps={} \
-		--learning_rate={} \
-		--train_dir={} \
-		--summaries_dir={} \
-		--verbosity={} \
-		--eval_step_interval={} \
-		--save_step_interval={}".format( SPEECH_COMMANDS_PATH,DATASET_DIR, KEYWORDS,	\
-													SILENT_PERCENTAGE, UNKNOWN_PERCENTAGE, \
-													PREPROCESS, WINDOW_STRIDE, MODEL_ARCHITECTURE, \
-													TRAINING_STEPS, \
-													LEARNING_RATE, TRAIN_DIR, LOGS_DIR, \
-													VERBOSITY, EVAL_STEP_INTERVAL, SAVE_STEP_INTERVAL)
-	os.system(cmnd)
+	if 	False == pathlib.Path(SAVED_MODEL).is_dir():
+		cmnd = "python {}/train.py \
+			--data_dir={} \
+			--wanted_words={} \
+			--silence_percentage={} \
+			--unknown_percentage={} \
+			--preprocess={} \
+			--window_stride={} \
+			--model_architecture={} \
+			--how_many_training_steps={} \
+			--learning_rate={} \
+			--train_dir={} \
+			--summaries_dir={} \
+			--verbosity={} \
+			--eval_step_interval={} \
+			--save_step_interval={}".format( SPEECH_COMMANDS_PATH,DATASET_DIR, KEYWORDS,	\
+														SILENT_PERCENTAGE, UNKNOWN_PERCENTAGE, \
+														PREPROCESS, WINDOW_STRIDE, MODEL_ARCHITECTURE, \
+														TRAINING_STEPS, \
+														LEARNING_RATE, TRAIN_DIR, LOGS_DIR, \
+														VERBOSITY, EVAL_STEP_INTERVAL, SAVE_STEP_INTERVAL)
+		os.system(cmnd)
 	print("################################################################################")
 	
 	print("\n################################################################################")
-	print("LOADING PRE-TRAINED MODEL")
+	print("GENERATE PRE-TRAINED MODEL")
 	print("################################################################################")
+	# Combine relevant training results (graph, weights, etc) into a single file for inference. 
+	# This process is known as freezing a model and the resulting model is known as a frozen model/graph, 
+	# as it cannot be further re-trained after this process.
 	if 	False == pathlib.Path(SAVED_MODEL).is_dir():
-		cmnd = 'rm -rf ' + SAVED_MODEL
-		os.system(cmnd)
 		cmnd = "python {}/freeze.py\
 				--wanted_words={} \
 				--window_stride_ms={} \
@@ -150,6 +152,7 @@ def main():
 				--output_file={}".format(SPEECH_COMMANDS_PATH, KEYWORDS, WINDOW_STRIDE, \
 													PREPROCESS, MODEL_ARCHITECTURE, TRAIN_DIR, \
 													MODEL_ARCHITECTURE, TOTAL_STEPS, SAVED_MODEL)
+		os.system(cmnd)
 	print("################################################################################")
 
 	print("\n################################################################################")

@@ -43,6 +43,13 @@ if 'image' == STREAMMODE:
 else:
 	CHANNELS 	= args.channels
 
+print("\n################################################################################")
+print("CONFIG")
+print("epochs", EPOCHS)
+print("streammode", STREAMMODE)
+print("channels", CHANNELS)
+print("################################################################################")
+
 # SOME CONFIGURATION
 BATCH_SIZE 	= 128
 OPTIMIZER = 'adam'
