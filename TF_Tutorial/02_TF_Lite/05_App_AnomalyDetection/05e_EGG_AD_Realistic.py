@@ -12,7 +12,7 @@ from tensorflow.keras.models import Model
 
 # CONSTANTS
 EMBEDDING_SIZE  = 2
-THRESHOLD       = 0.4 # Chosenf from the ROC
+THRESHOLD       = 0.04 # Chosenf from the ROC
 
 #####
 #	#
