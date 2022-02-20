@@ -14,3 +14,6 @@ TF_Tutorial/02_TF_Lite/03_App_KeywordSpotting/train/
 TF_Tutorial/02_TF_Lite/03_App_KeywordSpotting/trimmed/
 TF_Tutorial/02_TF_Lite/04_App_FacemaskDetection/models/
 *.wav
+**/.pio/build
+**/.pio/libdeps
+**/.vscode
